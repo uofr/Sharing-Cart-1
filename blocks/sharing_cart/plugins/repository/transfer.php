@@ -3,7 +3,7 @@
  * リポジトリファイル転送
  *
  * @author VERSION2 Inc.
- * @version $Id: transfer.php 448 2010-01-05 02:05:42Z malu $
+ * @version $Id: transfer.php 760 2012-05-30 03:12:19Z malu $
  * @package repository
  */
 
@@ -93,15 +93,15 @@ try {
 					if (!rename($temp_dir.'/'.$zip_name, $user_dir.'/'.$zip_name))
 						throw new SharingCart_RepositoryException('File rename failure');
 					
-					$sharing_cart       = new stdClass;
-					$sharing_cart->user = $USER->id;
-					$sharing_cart->name = $type;
-					$sharing_cart->icon = $icon;
-					$sharing_cart->text = $text;
-					$sharing_cart->time = time();
-					$sharing_cart->file = $zip_name;
+					$record = new stdClass;
+					$record->userid   = $USER->id;
+					$record->modname  = $type;
+					$record->modicon  = $icon;
+					$record->modtext  = $text;
+					$record->ctime    = time();
+					$record->filename = $zip_name;
 					
-					sharing_cart_table::insert_record($sharing_cart);
+					sharing_cart_table::insert_record($record);
 					
 					$completes[$id] = TRUE;
 				}

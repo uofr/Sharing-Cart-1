@@ -7,21 +7,21 @@ require_once '../../config.php';
 require_once './shared/SharingCart_Restore.php';
 require_once './sharing_cart_table.php';
 
-$sc_id     = required_param('id', PARAM_INT);
+$record_id = required_param('id', PARAM_INT);
 $course_id = required_param('course', PARAM_INT);
 $section_i = required_param('section', PARAM_INT);
 $return_to = urldecode(required_param('return'));
 
 // 共有アイテムが存在するかチェック
-$sharing_cart = sharing_cart_table::get_record_by_id($sc_id)
+$record = sharing_cart_table::get_record_by_id($record_id)
     or print_error('err_shared_id', 'block_sharing_cart', $return_to);
 
 // 自分が所有する共有アイテムかチェック
-$sharing_cart->user == $USER->id
+$record->userid == $USER->id
     or print_error('err_capability', 'block_sharing_cart', $return_to);
 
 // ZIPファイル名取得
-$zip_name = $sharing_cart->file;
+$zip_name = $record->filename;
 
 try {
 
@@ -73,5 +73,3 @@ try {
     error((string)$e); // デバッグ用に詳細メッセージを表示
 
 }
-
-?>

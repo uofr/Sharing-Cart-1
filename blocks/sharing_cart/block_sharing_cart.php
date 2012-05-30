@@ -1,4 +1,4 @@
-<?php // $Id: block_sharing_cart.php 448 2010-01-05 02:05:42Z malu $
+<?php // $Id: block_sharing_cart.php 760 2012-05-30 03:12:19Z malu $
 
 require_once dirname(__FILE__).'/plugins.php';
 require_once dirname(__FILE__).'/sharing_cart_lib.php';
@@ -7,7 +7,7 @@ class block_sharing_cart extends block_base {
 
     function init() {
         $this->title   = get_string('title', 'block_sharing_cart');
-        $this->version = 2009040600;
+        $this->version = 2012053000;
         
         sharing_cart_plugins::load();
     }
@@ -52,17 +52,11 @@ class block_sharing_cart extends block_base {
         // また、ここでドロップダウンリスト用にフォルダ名列挙もしておく
         $tree = array();
         $dirs = array();
-        if ($shared_items = get_records('sharing_cart', 'user', $USER->id)) {
-            foreach ($shared_items as $shared_item) {
-                $node   =& self::path_to_node($tree, explode('/', $shared_item->tree));
-                $node[] = array(
-                    'id'   => $shared_item->id,
-                    'path' => $shared_item->tree,
-                    'icon' => sharing_cart_lib::get_icon($shared_item->name, $shared_item->icon),
-                    'text' => $shared_item->text,
-                    'sort' => $shared_item->sort,
-                    );
-                $dirs[$shared_item->tree] = $shared_item->tree;
+        if ($items = get_records('sharing_cart', 'userid', $USER->id)) {
+            foreach ($items as $item) {
+                $node   =& self::path_to_node($tree, explode('/', $item->tree));
+                $node[] = $item;
+                $dirs[$item->tree] = $item->tree;
             }
             self::sort_tree($tree);
             unset($dirs['']);
@@ -188,11 +182,11 @@ var sharing_cart = new sharing_cart_handler({
         usort($node, array(__CLASS__, 'sort_item_cmp'));
     }
     private static function sort_item_cmp($lhs, $rhs) {
-        // by sharing_cart->sort field
-        if ($lhs['sort'] < $rhs['sort']) return -1;
-        if ($lhs['sort'] > $rhs['sort']) return +1;
+        // by sharing_cart->weight field
+        if ($lhs->weight < $rhs->weight) return -1;
+        if ($lhs->weight > $rhs->weight) return +1;
         // or by text
-        return strnatcasecmp($lhs['text'], $rhs['text']);
+        return strnatcasecmp($lhs->modtext, $rhs->modtext);
     }
     /**
      * render tree as HTML
@@ -229,25 +223,25 @@ var sharing_cart = new sharing_cart_handler({
         global $CFG;
         
         $text[] = str_repeat("\t", $depth + 1)
-                . '<li class="r0" id="shared_item_'.$item['id'].'">';
+                . '<li class="r0" id="shared_item_'.$item->id.'">';
         
         $text[] = '<div class="icon column c0">';
         if ($depth) {
             $text[] = print_spacer(10, $depth * 10, false, true);
         }
-        if (!empty($item['icon'])) {
-            $text[] = $item['icon'];
+        if ($icon = sharing_cart_lib::get_icon($item->modname, $item->modicon)) {
+            $text[] = $icon;
         }
         $text[] = '</div>';
         
-        $text[] = '<div class="column c1">'.$item['text'].'</div>';
+        $text[] = '<div class="column c1">'.$item->modtext.'</div>';
         
         $text[] = '<span class="commands">';
         {
             // ディレクトリ移動[→]
             $text[] = '<a title="'.self::$str_cache->movedir.'" href="javascript:void(0);"'
                     . ' onclick="return sharing_cart.movedir(this, '
-                    . '\''.addslashes(htmlspecialchars($item['path'])).'\');">'
+                    . '\''.addslashes(htmlspecialchars($item->tree)).'\');">'
                     . '<img src="'.$CFG->pixpath.'/t/right.gif" class="iconsmall"'
                     . ' alt="'.self::$str_cache->movedir.'" />'
                     . '</a>';
@@ -255,7 +249,7 @@ var sharing_cart = new sharing_cart_handler({
             // 並べ替え[↓↑]
             $text[] = '<a title="'.self::$str_cache->move.'" href="javascript:void(0);"'
                     . ' onclick="return sharing_cart.move(this, '
-                    . '\''.addslashes(htmlspecialchars($item['path'])).'\');">'
+                    . '\''.addslashes(htmlspecialchars($item->tree)).'\');">'
                     . '<img src="'.$CFG->pixpath.'/t/move.gif" class="iconsmall"'
                     . ' alt="'.self::$str_cache->move.'" />'
                     . '</a>';
@@ -304,5 +298,3 @@ var sharing_cart = new sharing_cart_handler({
     }
     private static $str_cache;
 }
-
-?>

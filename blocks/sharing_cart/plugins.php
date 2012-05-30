@@ -36,26 +36,23 @@ class sharing_cart_plugins
 		$name = preg_replace('/^sharing_cart_plugin_/', '', get_class($instance));
 		self::$instances[$name] = $instance;
 	}
-	public static function get_config($plugin, $user = 0)
+	public static function get_config($plugin, $userid = 0)
 	{
-		if (!record_exists('block', 'name', 'sharing_cart')) {
-			return null; // not installed yet
-		}
-		if ($record = get_record('sharing_cart_plugins', 'plugin', $plugin, 'user', $user)) {
+		if ($record = get_record('sharing_cart_plugins', 'plugin', $plugin, 'userid', $userid)) {
 			return unserialize($record->data);
 		} else {
 			return null;
 		}
 	}
-	public static function set_config($plugin, $data, $user = 0)
+	public static function set_config($plugin, $data, $userid = 0)
 	{
-		if (record_exists('sharing_cart_plugins', 'plugin', $plugin, 'user', $user)) {
+		if (record_exists('sharing_cart_plugins', 'plugin', $plugin, 'userid', $userid)) {
 			return set_field('sharing_cart_plugins', 'data', addslashes(serialize($data)),
-			                 'plugin', $plugin, 'user', $user);
+			                 'plugin', $plugin, 'userid', $userid);
 		} else {
 			$record         = new stdClass;
 			$record->plugin = $plugin;
-			$record->user   = $user;
+			$record->userid = $userid;
 			$record->data   = addslashes(serialize($data));
 			return insert_record('sharing_cart_plugins', $record);
 		}
@@ -95,6 +92,9 @@ class sharing_cart_plugins
 	public static function load($dir = null)
 	{
 		static $loaded_dirs = array();
+		if (get_field('block', 'version', 'name', 'sharing_cart') < 2012053000) {
+			return false; // need upgrade
+		}
 		if ($dir === null) {
 			$dir = dirname(__FILE__).'/plugins';
 		}
@@ -131,5 +131,3 @@ class sharing_cart_plugins
 	}
 	private static $instances = array();
 }
-
-?>

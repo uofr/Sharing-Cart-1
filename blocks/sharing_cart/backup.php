@@ -51,15 +51,15 @@ try {
 
 
     // モジュールの名前とZIPとの対応などをDBに登録 (ブロック表示で使用)
-    $sharing_cart       = new stdClass;
-    $sharing_cart->user = $USER->id;
-    $sharing_cart->name = addslashes($module->name);
-    $sharing_cart->icon = addslashes($cm->icon);
-    $sharing_cart->text = addslashes($module->name == 'label' ? $cm->extra : $cm->name);
-    $sharing_cart->time = $worker->getUnique(); // ZIP名生成に使用したユニーク値 (=タイムスタンプ)
-    $sharing_cart->file = $zipname;
-    $sharing_cart->sort = 0;
-    sharing_cart_table::insert_record($sharing_cart);
+    $record = new stdClass;
+    $record->userid   = $USER->id;
+    $record->modname  = addslashes($module->name);
+    $record->modicon  = addslashes($cm->icon);
+    $record->modtext  = addslashes($module->name == 'label' ? $cm->extra : $cm->name);
+    $record->ctime    = $worker->getUnique(); // ZIP名生成に使用したユニーク値 (=タイムスタンプ)
+    $record->filename = $zipname;
+    $record->weight   = 0;
+    sharing_cart_table::insert_record($record);
 
 
     if ($worker->succeeded()) {
@@ -91,5 +91,3 @@ try {
     error((string)$e); // デバッグ用に詳細メッセージを表示
 
 }
-
-?>

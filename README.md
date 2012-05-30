@@ -1,7 +1,8 @@
 Sharing Cart 1
 ==============
 
-version 1.9, release 14 - 2010.09.30
+version 1.9, release 15 - 2012.05.30
+
 
 Purpose
 -------
@@ -14,10 +15,12 @@ It copies and moves single course items without user data
 Items can be collected and saved on the Sharing Cart indefinitely,
 serving as a library of frequently used course items available for duplication.
 
+
 Requirements
 ------------
 
 Moodle 1.9.4 or later
+
 
 License
 -------
