@@ -3,7 +3,7 @@
  * リポジトリファイル転送
  *
  * @author VERSION2 Inc.
- * @version $Id: transfer.php 760 2012-05-30 03:12:19Z malu $
+ * @version $Id$
  * @package repository
  */
 

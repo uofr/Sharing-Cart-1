@@ -3,7 +3,7 @@
  * リポジトリプラグイン共用クラス
  *
  * @author VERSION2 Inc.
- * @version $Id: SharingCart_Repository.php 374 2009-10-26 07:30:37Z malu $
+ * @version $Id$
  * @package repository
  */
 

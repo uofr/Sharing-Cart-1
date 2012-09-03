@@ -3,7 +3,7 @@
  * リポジトリプラグイン設定フォーム
  *
  * @author VERSION2 Inc.
- * @version $Id: Settings.php 430 2009-12-03 09:29:46Z malu $
+ * @version $Id$
  * @package repository
  */
 

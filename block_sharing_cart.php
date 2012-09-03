@@ -1,4 +1,4 @@
-<?php // $Id: block_sharing_cart.php 760 2012-05-30 03:12:19Z malu $
+<?php // $Id$
 
 require_once dirname(__FILE__).'/plugins.php';
 require_once dirname(__FILE__).'/sharing_cart_lib.php';

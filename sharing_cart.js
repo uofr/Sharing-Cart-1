@@ -2,7 +2,7 @@
  * Sharing Cart: Script
  *
  * @author VERSION2 Inc.
- * @version $Id: sharing_cart.js 435 2009-12-21 10:35:03Z malu $
+ * @version $Id$
  * @package sharingcart
  */
 

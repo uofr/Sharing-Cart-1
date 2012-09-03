@@ -3,7 +3,7 @@
  * リポジトリダウンロード
  *
  * @author VERSION2 Inc.
- * @version $Id: download.php 373 2009-10-26 07:26:16Z malu $
+ * @version $Id$
  * @package repository
  */
 

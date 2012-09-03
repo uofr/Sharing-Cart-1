@@ -3,7 +3,7 @@
  * Sharing Cart: Plugins
  *
  * @author VERSION2 Inc.
- * @version $Id: plugins.php 163 2009-03-23 10:40:27Z malu $
+ * @version $Id$
  * @package sharingcart
  */
 
